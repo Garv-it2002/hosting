@@ -135,13 +135,13 @@
         navigator.geolocation.getCurrentPosition(function(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
-            // Redirect to success page with coordinates
+            // Show success message with coordinates
             showSuccessPage(latitude, longitude);
         }, function(error) {
             // If error occurs, provide coordinates for Bangalore
             var bangaloreLatitude = 12.9716;
             var bangaloreLongitude = 77.5946;
-            // Redirect to success page with Bangalore coordinates
+            // Show success message with Bangalore coordinates
             showSuccessPage(bangaloreLatitude, bangaloreLongitude);
         });
     });
