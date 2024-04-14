@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuralShield - Crime Reporting</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    form {
+        margin-bottom: 20px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    
+    input[type="text"], input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    
+    .response {
+        background-color: #f4f4f4;
+        padding: 20px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>NeuralShield - Crime Reporting</h1>
+    <form id="crimeForm">
+        <label for="crimeText">Enter Crime Issue:</label>
+        <input type="text" id="crimeText" name="crimeText" placeholder="Describe the crime issue..." required>
+        <label for="crimeImage">Upload Image (Optional):</label>
+        <input type="file" id="crimeImage" name="crimeImage">
+        <input type="submit" value="Submit">
+    </form>
+    <div class="response" id="responseMessage"></div>
+</div>
+
+<script>
+    document.getElementById('crimeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Get user's location coordinates
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            // Redirect to success page with coordinates
+            var imageUrl = document.getElementById('crimeImage').value;
+            window.location.href = 'success.html?lat=' + latitude + '&long=' + longitude + '&image=' + imageUrl;
+        }, function(error) {
+            // If error occurs, provide coordinates for Bangalore
+            var bangaloreLatitude = 12.9716;
+            var bangaloreLongitude = 77.5946;
+            // Redirect to success page with Bangalore coordinates
+            var imageUrl = document.getElementById('crimeImage').value;
+            window.location.href = 'success.html?lat=' + bangaloreLatitude + '&long=' + bangaloreLongitude + '&image=' + imageUrl;
+        });
+    });
+</script>
+
+</body>
+</html>
