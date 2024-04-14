@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeuralShield - Crime Reporting</title>
+<title>NeuralShield - Crime Guarding</title>
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -95,7 +95,7 @@
 <body>
 
 <div class="container">
-    <h1>NeuralShield - Crime Reporting</h1>
+    <h1>NeuralShield - Crime Guarding</h1>
     <form id="crimeForm">
         <label for="crimeText">Enter Crime Issue:</label>
         <input type="text" id="crimeText" name="crimeText" placeholder="Describe the crime issue..." required>
@@ -106,6 +106,28 @@
     <div class="response" id="responseMessage"></div>
 </div>
 
+<div class="container" style="display: none;" id="successContainer">
+    <h1>Success - NeuralShield</h1>
+    <p>Your information has been successfully uploaded.</p>
+    <p><strong>Coordinates:</strong></p>
+    <table>
+        <tr>
+            <th>Coordinate</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td><strong>Latitude</strong></td>
+            <td id="latitude"></td>
+        </tr>
+        <tr>
+            <td><strong>Longitude</strong></td>
+            <td id="longitude"></td>
+        </tr>
+    </table>
+    <p><strong>Uploaded Image:</strong></p>
+    <div id="imageContainer"></div>
+</div>
+
 <script>
     document.getElementById('crimeForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -114,17 +136,44 @@
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
             // Redirect to success page with coordinates
-            var imageUrl = document.getElementById('crimeImage').value;
-            window.location.href = 'success.html?lat=' + latitude + '&long=' + longitude + '&image=' + imageUrl;
+            showSuccessPage(latitude, longitude);
         }, function(error) {
             // If error occurs, provide coordinates for Bangalore
             var bangaloreLatitude = 12.9716;
             var bangaloreLongitude = 77.5946;
             // Redirect to success page with Bangalore coordinates
-            var imageUrl = document.getElementById('crimeImage').value;
-            window.location.href = 'success.html?lat=' + bangaloreLatitude + '&long=' + bangaloreLongitude + '&image=' + imageUrl;
+            showSuccessPage(bangaloreLatitude, bangaloreLongitude);
         });
     });
+
+    function showSuccessPage(latitude, longitude) {
+        // Hide crime form and show success message
+        document.getElementById('crimeForm').style.display = 'none';
+        document.getElementById('successContainer').style.display = 'block';
+
+        // Display coordinates
+        document.getElementById('latitude').textContent = latitude;
+        document.getElementById('longitude').textContent = longitude;
+
+        // Display uploaded image if available
+        var imageContainer = document.getElementById('imageContainer');
+        var uploadedImage = document.getElementById('crimeImage').files[0];
+        if (uploadedImage) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var image = document.createElement('img');
+                image.src = event.target.result;
+                image.alt = 'Uploaded Image';
+                image.className = 'uploaded-image';
+                imageContainer.appendChild(image);
+            };
+            reader.readAsDataURL(uploadedImage);
+        } else {
+            var noImageMessage = document.createElement('p');
+            noImageMessage.textContent = 'No image uploaded';
+            imageContainer.appendChild(noImageMessage);
+        }
+    }
 </script>
 
 </body>
